@@ -20,6 +20,7 @@ class ControllerButtons {
   static const int START = 8192; // 2^13
   static const int L3 = 16384; // 2^14
   static const int R3 = 32768; // 2^15
+  static const int FN = 65536;
 }
 
 class VControllerClient {
@@ -48,9 +49,9 @@ class VControllerClient {
       _socket = await .bind(InternetAddress.anyIPv4, 0);
       print('[*] Đã mở UDP Socket tại port: ${_socket?.port}');
 
-      // Bắt đầu vòng lặp gửi dữ liệu liên tục 60 FPS (~16ms/lần)
+      // Bắt đầu vòng lặp gửi dữ liệu liên tục 30 FPS (~33ms/lần)
       // Vòng lặp này cực kỳ quan trọng để giữ chuyển động mượt mà cho Joystick
-      _loopTimer = Timer.periodic(const Duration(milliseconds: 32), (_) {
+      _loopTimer = Timer.periodic(const Duration(milliseconds: 33), (_) {
         _sendPacket();
       });
     } catch (e) {
@@ -69,18 +70,18 @@ class VControllerClient {
   void _sendPacket() {
     if (_socket == null || _targetAddress == null) return;
 
-    // Khởi tạo bộ đệm chính xác 6 Bytes
-    var data = ByteData(6);
+    // Khởi tạo bộ đệm chính xác 8 Bytes
+    var data = ByteData(8);
 
-    // Byte 0 & 1: Lưu trạng thái Nút Bấm (Unsigned Short 16-bit, Big Endian)
-    data.setUint16(0, _buttons, Endian.big);
+    // Byte 0 - 3: Lưu trạng thái Nút Bấm (Unsigned Short 16-bit, Big Endian)
+    data.setUint32(0, _buttons, Endian.big);
 
-    // Byte 2, 3, 4, 5: Lưu tọa độ Joystick (Signed Int 8-bit)
+    // Byte 4 - 7: Lưu tọa độ Joystick (Signed Int 8-bit)
     // Dùng hàm clamp(-127, 127) để đảm bảo giá trị không bị tràn bộ nhớ (Overflow)
-    data.setInt8(2, _lx.round().clamp(-127, 127));
-    data.setInt8(3, _ly.round().clamp(-127, 127));
-    data.setInt8(4, _rx.round().clamp(-127, 127));
-    data.setInt8(5, _ry.round().clamp(-127, 127));
+    data.setInt8(4, _lx.round().clamp(-127, 127));
+    data.setInt8(5, _ly.round().clamp(-127, 127));
+    data.setInt8(6, _rx.round().clamp(-127, 127));
+    data.setInt8(7, _ry.round().clamp(-127, 127));
 
     // Bắn gói tin đi qua UDP
     _socket?.send(data.buffer.asUint8List(), _targetAddress!, serverPort);
@@ -108,7 +109,7 @@ class VControllerClient {
   void updateLeftJoystick(double x, double y) {
     _lx = x;
     _ly = y;
-    // Không cần ép gửi ngay vì vòng lặp 60FPS sẽ tự động lấy giá trị mới nhất này
+    // Không cần ép gửi ngay vì vòng lặp 30FPS sẽ tự động lấy giá trị mới nhất này
   }
 
   /// Cập nhật tọa độ Joystick Phải (Dùng cho Camera / Chuột)

@@ -20,6 +20,7 @@ class ControllerFnButton extends StatelessWidget {
   });
 
   void _buttonDown(PointerEvent event) {
+    print("Nút có bitmask: $bitmask đã được nhấn!");
     client.updateButton(bitmask, true);
   }
 

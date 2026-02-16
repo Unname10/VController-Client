@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:vcontroller/src/services/controller_client.dart';
 
 import 'package:vcontroller/src/layouts/widgets.dart';
+import 'package:vcontroller/src/widgets/fn_button.dart';
 
 const String serverIp = "192.168.1.179";
 const int serverPort = 5005;
@@ -67,16 +68,33 @@ class _ControllerState extends State<Controller> {
       // Scaffold cung cấp cấu trúc màn hình cơ bản (nền trắng, app bar, v.v.)
       home: Scaffold(
         // Đưa Container của bạn vào thuộc tính body
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            crossAxisAlignment: .start,
-            children: [
-              LeftPanel(client: client),
-              CenterPanel(client: client),
-              RightPanel(client: client),
-            ],
-          ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                crossAxisAlignment: .start,
+                children: [
+                  LeftPanel(client: client),
+                  CenterPanel(client: client),
+                  RightPanel(client: client),
+                ],
+              ),
+            ),
+            Positioned.fill(
+              child: Align(
+                alignment: .bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ControllerFnButton(
+                    client: client,
+                    bitmask: 65536,
+                    iconContent: Icons.arrow_downward_rounded,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
