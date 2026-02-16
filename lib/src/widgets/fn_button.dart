@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:vcontroller/src/services/controller_client.dart';
 
-const double buttonSize = 60; // Cỡ nút
-const double textSize = 18; // Cỡ chữ
+const double buttonHeight = 40;
+const double buttonWidth = 70; // Chiều cao nút
+const double size = 40; // Cỡ chữ/biểu tượng
 
-class ControllerButton extends StatelessWidget {
+class ControllerFnButton extends StatelessWidget {
   final VControllerClient client;
   final int bitmask;
   final String? textContent;
-  final Widget? widgetContent;
+  final IconData? iconContent;
 
-  const ControllerButton({
+  const ControllerFnButton({
     super.key,
     required this.client,
     required this.bitmask,
     this.textContent,
-    this.widgetContent,
+    this.iconContent,
   });
 
   void _buttonDown(PointerEvent event) {
@@ -33,20 +34,20 @@ class ControllerButton extends StatelessWidget {
       onPointerUp: _buttonUp,
       onPointerCancel: _buttonUp,
       child: Container(
-        width: buttonSize,
-        height: buttonSize,
+        height: buttonHeight,
+        width: buttonWidth,
         decoration: BoxDecoration(
-          shape: .circle,
           color: Colors.lightGreen,
           border: Border.all(),
+          borderRadius: BorderRadius.all(.circular(30)),
         ),
         child: Center(
           child: textContent != null
               ? Text(
                   textContent!,
-                  style: TextStyle(color: Colors.white, fontSize: textSize),
+                  style: TextStyle(color: Colors.white, fontSize: size),
                 )
-              : widgetContent,
+              : Icon(iconContent, size: size, color: Colors.white),
         ),
       ),
     );

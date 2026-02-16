@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:vcontroller/src/services/controller_client.dart';
-import 'package:vcontroller/src/widgets/joystick.dart';
+
+import 'package:vcontroller/src/layouts/widgets.dart';
 
 const String serverIp = "192.168.1.179";
 const int serverPort = 5005;
@@ -17,18 +18,11 @@ void main() async {
   // Ẩn thanh trạng thái
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  VControllerClient client = VControllerClient(
-    serverIp: serverIp,
-    serverPort: serverPort,
-  );
-  await client.connect();
-
-  runApp(Controller(client: client));
+  runApp(Controller());
 }
 
 class Controller extends StatefulWidget {
-  final VControllerClient client;
-  const Controller({super.key, required this.client});
+  const Controller({super.key});
 
   @override
   State<Controller> createState() => _ControllerState();
@@ -36,18 +30,26 @@ class Controller extends StatefulWidget {
 
 class _ControllerState extends State<Controller> {
   late final AppLifecycleListener _lifecycleListener;
+  late final VControllerClient client;
 
   @override
   void initState() {
     super.initState();
+
+    // Khởi tạo Socket và kết nối với Server
+    client = VControllerClient(serverIp: serverIp, serverPort: serverPort);
+    client.connect();
+
+    // Khởi tạo đối tượng lắng nghe sự kiện ẩn/hiện app
+    // Để đóng/kết nối lại với server (Tiết kiệm pin và giảm nghẽn băng thông)
     _lifecycleListener = AppLifecycleListener(
       onPause: () {
         print("App vừa bị ẩn, đang đóng socket...");
-        widget.client.disconnect();
+        client.disconnect();
       },
       onResume: () {
         print("App vừa trở lại, mở lại socket...");
-        widget.client.connect();
+        client.connect();
       },
     );
   }
@@ -55,7 +57,7 @@ class _ControllerState extends State<Controller> {
   @override
   void dispose() {
     _lifecycleListener.dispose();
-    widget.client.disconnect();
+    client.disconnect();
     super.dispose();
   }
 
@@ -64,37 +66,17 @@ class _ControllerState extends State<Controller> {
     return MaterialApp(
       // Scaffold cung cấp cấu trúc màn hình cơ bản (nền trắng, app bar, v.v.)
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("VController"),
-          backgroundColor: Colors.lightBlue,
-        ),
         // Đưa Container của bạn vào thuộc tính body
-        body: Column(
-          mainAxisAlignment: .center,
-          children: [
-            Row(
-              mainAxisAlignment: .center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(150),
-                  child: VirtualJoystick(
-                    onJoystickChanged: (double x, double y) {
-                      widget.client.updateLeftJoystick(x, y);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(150),
-                  child: VirtualJoystick(
-                    onJoystickChanged: (double x, double y) {
-                      print("X: $x, Y: $y");
-                      widget.client.updateRightJoystick(x, y);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            crossAxisAlignment: .start,
+            children: [
+              LeftPanel(client: client),
+              CenterPanel(client: client),
+              RightPanel(client: client),
+            ],
+          ),
         ),
       ),
     );

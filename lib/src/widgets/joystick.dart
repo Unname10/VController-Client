@@ -9,8 +9,8 @@ class VirtualJoystick extends StatefulWidget {
 }
 
 class _VirtualJoystickState extends State<VirtualJoystick> {
-  final double baseSize = 200;
-  final double stickSize = 70.0;
+  final double baseSize = 150;
+  final double stickSize = 50.0;
 
   // 1. VŨ KHÍ BÍ MẬT: ValueNotifier
   // Gói tọa độ vào một hộp chứa có khả năng tự phát tín hiệu khi thay đổi

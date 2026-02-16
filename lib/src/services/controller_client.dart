@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 /// Định nghĩa các Bitmask cho nút bấm (Khớp với Server Python)
-class GameButtons {
+class ControllerButtons {
   static const int UP = 1; // 2^0
   static const int RIGHT = 2; // 2^1
   static const int DOWN = 4; // 2^2
@@ -18,6 +18,8 @@ class GameButtons {
   static const int RT = 2048; // 2^11
   static const int BACK = 4096; // 2^12
   static const int START = 8192; // 2^13
+  static const int L3 = 16384; // 2^14
+  static const int R3 = 32768; // 2^15
 }
 
 class VControllerClient {

@@ -7,20 +7,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vcontroller/src/services/controller_client.dart';
 
 import 'package:vcontroller/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    VControllerClient testClient = VControllerClient(
-      serverIp: "192.168.1.179",
-      serverPort: 5005,
-    );
-    await testClient.connect();
-
     // Build our app and trigger a frame.
-    await tester.pumpWidget(Controller(client: testClient));
+    await tester.pumpWidget(const Controller());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
