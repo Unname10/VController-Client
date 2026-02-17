@@ -67,6 +67,7 @@ class _ControllerState extends State<Controller> {
     return MaterialApp(
       // Scaffold cung cấp cấu trúc màn hình cơ bản (nền trắng, app bar, v.v.)
       home: Scaffold(
+        backgroundColor: Colors.black,
         // Đưa Container của bạn vào thuộc tính body
         body: Stack(
           children: [

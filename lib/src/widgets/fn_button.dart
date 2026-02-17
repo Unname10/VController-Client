@@ -38,8 +38,8 @@ class ControllerFnButton extends StatelessWidget {
         height: buttonHeight,
         width: buttonWidth,
         decoration: BoxDecoration(
-          color: Colors.lightGreen,
-          border: Border.all(),
+          color: Colors.transparent,
+          border: Border.all(color: Colors.white),
           borderRadius: BorderRadius.all(.circular(30)),
         ),
         child: Center(

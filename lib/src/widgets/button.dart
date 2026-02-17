@@ -37,8 +37,8 @@ class ControllerButton extends StatelessWidget {
         height: buttonSize,
         decoration: BoxDecoration(
           shape: .circle,
-          color: Colors.lightGreen,
-          border: Border.all(),
+          color: Colors.transparent,
+          border: Border.all(color: Colors.white),
         ),
         child: Center(
           child: textContent != null
