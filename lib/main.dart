@@ -4,10 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:vcontroller/src/services/controller_client.dart';
 
 import 'package:vcontroller/src/layouts/widgets.dart';
-import 'package:vcontroller/src/widgets/fn_button.dart';
 
 const String serverIp = "192.168.1.179";
 const int serverPort = 5005;
+
+// Thông số tùy chỉnh
+const double minHeight = 350;
+const double minWidth = 800;
+const double paddingVertical = 10;
+const double paddingHorizontal = 20;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,38 +69,51 @@ class _ControllerState extends State<Controller> {
 
   @override
   Widget build(BuildContext context) {
+    // Kiểm tra tính hợp lệ của các padding (không hợp lệ = bỏ)
+    final double computedPaddingVertical =
+        MediaQuery.of(context).size.height - 2 * paddingVertical - minHeight > 0
+        ? paddingVertical
+        : 0;
+    final double computedPaddingHorizontal =
+        MediaQuery.of(context).size.width - 2 * paddingHorizontal - minWidth > 0
+        ? paddingVertical
+        : 0;
+
     return MaterialApp(
       // Scaffold cung cấp cấu trúc màn hình cơ bản (nền trắng, app bar, v.v.)
       home: Scaffold(
         backgroundColor: Colors.black,
-        // Đưa Container của bạn vào thuộc tính body
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                crossAxisAlignment: .start,
-                children: [
-                  LeftPanel(client: client),
-                  CenterPanel(client: client),
-                  RightPanel(client: client),
-                ],
-              ),
-            ),
-            Positioned.fill(
-              child: Align(
-                alignment: .bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: ControllerFnButton(
-                    client: client,
-                    bitmask: 65536,
-                    iconContent: Icons.arrow_downward_rounded,
+        body: Padding(
+          padding: .only(
+            right: computedPaddingHorizontal,
+            left: computedPaddingHorizontal,
+            top: computedPaddingVertical,
+            bottom: computedPaddingVertical,
+          ),
+          child: SizedBox.expand(
+            child: Stack(
+              children: [
+                Align(
+                  alignment: .bottomLeft,
+                  child: SizedBox(
+                    height: minHeight,
+                    child: LeftPanel(client: client),
                   ),
                 ),
-              ),
+                Align(
+                  alignment: .topCenter,
+                  child: CenterPanel(client: client),
+                ),
+                Align(
+                  alignment: .bottomRight,
+                  child: SizedBox(
+                    height: minHeight,
+                    child: RightPanel(client: client),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

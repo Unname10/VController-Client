@@ -9,7 +9,7 @@ class CenterPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: .start,
+      mainAxisAlignment: .center,
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 70),

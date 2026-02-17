@@ -19,60 +19,58 @@ class ButtonDiamond extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: rowDirectional,
-            children: [
-              Placeholder(
-                // Todo: Remove Hard code
-                fallbackHeight: gap,
-                fallbackWidth: gap,
-                color: Colors.transparent,
-              ),
-              up,
-              Placeholder(
-                // Todo: Remove Hard code
-                fallbackHeight: gap,
-                fallbackWidth: gap,
-                color: Colors.transparent,
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: rowDirectional,
-            children: [
-              left,
-              Placeholder(
-                // Todo: Remove Hard code
-                fallbackHeight: gap,
-                fallbackWidth: gap,
-                color: Colors.transparent,
-              ),
-              right,
-            ],
-          ),
-          Row(
-            mainAxisAlignment: rowDirectional,
-            children: [
-              Placeholder(
-                // Todo: Remove Hard code
-                fallbackHeight: gap,
-                fallbackWidth: gap,
-                color: Colors.transparent,
-              ),
-              down,
-              Placeholder(
-                // Todo: Remove Hard code
-                fallbackHeight: gap,
-                fallbackWidth: gap,
-                color: Colors.transparent,
-              ),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: rowDirectional,
+          children: [
+            Placeholder(
+              // Todo: Remove Hard code
+              fallbackHeight: gap,
+              fallbackWidth: gap,
+              color: Colors.transparent,
+            ),
+            up,
+            Placeholder(
+              // Todo: Remove Hard code
+              fallbackHeight: gap,
+              fallbackWidth: gap,
+              color: Colors.transparent,
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: rowDirectional,
+          children: [
+            left,
+            Placeholder(
+              // Todo: Remove Hard code
+              fallbackHeight: gap,
+              fallbackWidth: gap,
+              color: Colors.transparent,
+            ),
+            right,
+          ],
+        ),
+        Row(
+          mainAxisAlignment: rowDirectional,
+          children: [
+            Placeholder(
+              // Todo: Remove Hard code
+              fallbackHeight: gap,
+              fallbackWidth: gap,
+              color: Colors.transparent,
+            ),
+            down,
+            Placeholder(
+              // Todo: Remove Hard code
+              fallbackHeight: gap,
+              fallbackWidth: gap,
+              color: Colors.transparent,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
