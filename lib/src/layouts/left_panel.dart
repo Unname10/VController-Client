@@ -71,7 +71,7 @@ class LeftPanel extends StatelessWidget {
         ),
         Positioned(
           // TODO: Sửa Hard Code
-          left: 130,
+          left: 140,
           top: 200,
           child: VirtualJoystick(
             onJoystickChanged: (double x, double y) {

@@ -10,7 +10,7 @@ class VirtualJoystick extends StatefulWidget {
 
 class _VirtualJoystickState extends State<VirtualJoystick> {
   final double baseSize = 150;
-  final double stickSize = 50.0;
+  final double stickSize = 60.0;
 
   // 1. VŨ KHÍ BÍ MẬT: ValueNotifier
   // Gói tọa độ vào một hộp chứa có khả năng tự phát tín hiệu khi thay đổi
@@ -68,25 +68,6 @@ class _VirtualJoystickState extends State<VirtualJoystick> {
     widget.onJoystickChanged(0.0, 0.0);
   }
 
-  // void _updateStickPosition(Offset localPosition) {
-  //   final center = Offset(baseSize / 2, baseSize / 2);
-  //   Offset delta = localPosition - center;
-  //   double distance = delta.distance;
-  //   double maxRadius = (baseSize - stickSize) / 2;
-
-  //   if (distance > maxRadius) {
-  //     // Tối ưu hóa toán học: Tránh gọi lại hàm nhân/chia nhiều lần
-  //     double ratio = maxRadius / distance;
-  //     delta = Offset(delta.dx * ratio, delta.dy * ratio);
-  //   }
-
-  //   // 2. CẬP NHẬT GIÁ TRỊ: Chỉ gán data mới, TUYỆT ĐỐI KHÔNG GỌI setState()
-  //   _stickOffset.value = delta;
-
-  //   // Bắn dữ liệu ra ngoài
-  //   widget.onJoystickChanged(delta.dx / maxRadius, (delta.dy / maxRadius) * -1);
-  // }
-
   @override
   void dispose() {
     // 3. QUAN TRỌNG: Phải hủy ValueNotifier khi đóng màn hình để chống tràn RAM
@@ -108,8 +89,8 @@ class _VirtualJoystickState extends State<VirtualJoystick> {
             width: baseSize,
             height: baseSize,
             decoration: BoxDecoration(
-              color: Colors.grey.withValues(alpha: 0.3),
               shape: BoxShape.circle,
+              border: .all(color: Colors.white),
             ),
           ),
 
@@ -128,15 +109,8 @@ class _VirtualJoystickState extends State<VirtualJoystick> {
               width: stickSize,
               height: stickSize,
               decoration: BoxDecoration(
-                color: Colors.lightBlue,
+                color: Colors.white.withValues(alpha: 0.7),
                 shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 5,
-                    spreadRadius: 2,
-                  ),
-                ],
               ),
             ),
           ),

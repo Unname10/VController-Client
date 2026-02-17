@@ -72,7 +72,7 @@ class RightPanel extends StatelessWidget {
         ),
         Positioned(
           // TODO: Sửa Hard Code
-          right: 130,
+          right: 140,
           top: 200,
           child: VirtualJoystick(
             onJoystickChanged: (double x, double y) {
