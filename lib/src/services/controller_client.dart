@@ -69,7 +69,7 @@ class VControllerClient {
   void _sendPacket() {
     if (_socket == null || _targetAddress == null) return;
 
-    // Khởi tạo bộ đệm chính xác 8 Bytes
+    // Khởi tạo bộ đệm chính xác 6 Bytes
     var data = ByteData(6);
 
     // Byte 0 - 1: Lưu trạng thái Nút Bấm (Unsigned Short 16-bit, Big Endian)
