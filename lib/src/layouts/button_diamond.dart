@@ -24,14 +24,14 @@ class ButtonDiamond extends StatelessWidget {
         Row(
           mainAxisAlignment: rowDirectional,
           children: [
-            Placeholder(
+            const Placeholder(
               // Todo: Remove Hard code
               fallbackHeight: gap,
               fallbackWidth: gap,
               color: Colors.transparent,
             ),
             up,
-            Placeholder(
+            const Placeholder(
               // Todo: Remove Hard code
               fallbackHeight: gap,
               fallbackWidth: gap,
@@ -43,7 +43,7 @@ class ButtonDiamond extends StatelessWidget {
           mainAxisAlignment: rowDirectional,
           children: [
             left,
-            Placeholder(
+            const Placeholder(
               // Todo: Remove Hard code
               fallbackHeight: gap,
               fallbackWidth: gap,
@@ -55,14 +55,14 @@ class ButtonDiamond extends StatelessWidget {
         Row(
           mainAxisAlignment: rowDirectional,
           children: [
-            Placeholder(
+            const Placeholder(
               // Todo: Remove Hard code
               fallbackHeight: gap,
               fallbackWidth: gap,
               color: Colors.transparent,
             ),
             down,
-            Placeholder(
+            const Placeholder(
               // Todo: Remove Hard code
               fallbackHeight: gap,
               fallbackWidth: gap,

@@ -57,7 +57,10 @@ class ControllerButton extends StatelessWidget {
           child: textContent != null
               ? Text(
                   textContent!,
-                  style: TextStyle(color: Colors.white, fontSize: textSize),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: textSize,
+                  ),
                 )
               : Icon(iconContent, size: size, color: Colors.white),
         ),
