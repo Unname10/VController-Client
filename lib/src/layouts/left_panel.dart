@@ -4,8 +4,7 @@ import 'package:vcontroller/src/services/controller_client.dart';
 import 'package:vcontroller/src/widgets/widgets.dart';
 
 class LeftPanel extends StatelessWidget {
-  final VControllerClient client;
-  const LeftPanel({super.key, required this.client});
+  const LeftPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,49 +22,21 @@ class LeftPanel extends StatelessWidget {
                   direction: Axis.horizontal,
                   mainAxisAlignment: .spaceBetween,
                   children: [
-                    ControllerButton(
-                      bitmask: 256,
-                      textContent: "LT",
-                      client: client,
-                    ),
-                    ControllerButton(
-                      bitmask: 512,
-                      textContent: "LB",
-                      client: client,
-                    ),
+                    ControllerButton(bitmask: 256, textContent: "LT"),
+                    ControllerButton(bitmask: 512, textContent: "LB"),
                   ],
                 ),
               ),
             ),
             ButtonDiamond(
-              up: ControllerButton(
-                bitmask: 1,
-                textContent: "1",
-                client: client,
-              ),
-              right: ControllerButton(
-                bitmask: 2,
-                textContent: "2",
-                client: client,
-              ),
-              down: ControllerButton(
-                bitmask: 4,
-                textContent: "3",
-                client: client,
-              ),
-              left: ControllerButton(
-                bitmask: 8,
-                textContent: "4",
-                client: client,
-              ),
+              up: ControllerButton(bitmask: 1, textContent: "1"),
+              right: ControllerButton(bitmask: 2, textContent: "2"),
+              down: ControllerButton(bitmask: 4, textContent: "3"),
+              left: ControllerButton(bitmask: 8, textContent: "4"),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: ControllerButton(
-                bitmask: 16384,
-                textContent: "L3",
-                client: client,
-              ),
+              child: ControllerButton(bitmask: 16384, textContent: "L3"),
             ),
           ],
         ),
@@ -75,7 +46,7 @@ class LeftPanel extends StatelessWidget {
           top: 200,
           child: VirtualJoystick(
             onJoystickChanged: (double x, double y) {
-              client.updateLeftJoystick(x, y);
+              VControllerClient().updateLeftJoystick(x, y);
             },
           ),
         ),

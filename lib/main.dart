@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:vcontroller/src/services/controller_client.dart';
 
 import 'package:vcontroller/src/layouts/widgets.dart';
-
-const String serverIp = "192.168.1.179";
-const int serverPort = 5005;
+import 'package:vcontroller/src/widgets/settings_dialog.dart';
 
 // Thông số tùy chỉnh
 const double minHeight = 350;
@@ -36,34 +35,56 @@ class Controller extends StatefulWidget {
 
 class _ControllerState extends State<Controller> {
   late final AppLifecycleListener _lifecycleListener;
-  late final VControllerClient client;
+  final TextEditingController _targetController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
+  Future<void> loadSavedSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    String savedTarget = prefs.getString('target_server') ?? '192.168.1.2:5005';
+
+    setState(() {
+      _targetController.text = savedTarget;
+      print("[*] Đã cập nhật địa chỉ server sang địa chỉ đã lưu!");
+    });
+  }
+
+  Future<void> initialize() async {
+    // Nạp cấu hình
+    await loadSavedSettings();
 
     // Khởi tạo Socket và kết nối với Server
-    client = VControllerClient(serverIp: serverIp, serverPort: serverPort);
-    client.connect();
+    await VControllerClient().init(
+      ip: _targetController.text.split(":")[0],
+      port: int.parse(_targetController.text.split(":")[1]),
+    );
+
+    VControllerClient().connect();
 
     // Khởi tạo đối tượng lắng nghe sự kiện ẩn/hiện app
     // Để đóng/kết nối lại với server (Tiết kiệm pin và giảm nghẽn băng thông)
     _lifecycleListener = AppLifecycleListener(
       onPause: () {
         print("App vừa bị ẩn, đang đóng socket...");
-        client.disconnect();
+        VControllerClient().disconnect();
       },
       onResume: () {
         print("App vừa trở lại, mở lại socket...");
-        client.connect();
+        VControllerClient().connect();
       },
     );
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    initialize();
+  }
+
+  @override
   void dispose() {
     _lifecycleListener.dispose();
-    client.disconnect();
+    _targetController.dispose();
+    VControllerClient().disconnect();
     super.dispose();
   }
 
@@ -81,40 +102,44 @@ class _ControllerState extends State<Controller> {
 
     return MaterialApp(
       // Scaffold cung cấp cấu trúc màn hình cơ bản (nền trắng, app bar, v.v.)
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        body: Padding(
-          padding: .only(
-            right: computedPaddingHorizontal,
-            left: computedPaddingHorizontal,
-            top: computedPaddingVertical,
-            bottom: computedPaddingVertical,
-          ),
-          child: SizedBox.expand(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: .bottomLeft,
-                  child: SizedBox(
-                    height: minHeight,
-                    child: LeftPanel(client: client),
-                  ),
+      home: Builder(
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Padding(
+              padding: .only(
+                right: computedPaddingHorizontal,
+                left: computedPaddingHorizontal,
+                top: computedPaddingVertical,
+                bottom: computedPaddingVertical,
+              ),
+              child: SizedBox.expand(
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: .bottomLeft,
+                      child: SizedBox(height: minHeight, child: LeftPanel()),
+                    ),
+                    Align(alignment: .topCenter, child: CenterPanel()),
+                    Align(
+                      alignment: .bottomRight,
+                      child: SizedBox(height: minHeight, child: RightPanel()),
+                    ),
+                    Align(
+                      alignment: .topCenter,
+                      child: IconButton(
+                        icon: const Icon(Icons.settings, color: Colors.white),
+                        onPressed: () {
+                          showSettingsDialog(context, _targetController);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                Align(
-                  alignment: .topCenter,
-                  child: CenterPanel(client: client),
-                ),
-                Align(
-                  alignment: .bottomRight,
-                  child: SizedBox(
-                    height: minHeight,
-                    child: RightPanel(client: client),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

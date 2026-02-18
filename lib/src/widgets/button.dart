@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:vcontroller/src/services/controller_client.dart';
 
-const double buttonSize = 60; // Cỡ nút
-const double textSize = 18; // Cỡ chữ
+const double buttonCircleSize = 60; // Cỡ nút tròn
+const double buttonRoundedHeight = 40; // Cỡ nút bo cong
+const double buttonRoundedWidth = 70;
+const double textSize = 18;
+const double size = 40; // Cỡ chữ/biểu tượng
+
+enum ButtonShape { circle, rounded } // Cỡ chữ
 
 class ControllerButton extends StatelessWidget {
-  final VControllerClient client;
   final int bitmask;
   final String? textContent;
+  final IconData? iconContent;
   final Widget? widgetContent;
+  final ButtonShape buttonType;
 
   const ControllerButton({
     super.key,
-    required this.client,
     required this.bitmask,
     this.textContent,
+    this.iconContent,
     this.widgetContent,
+    this.buttonType = ButtonShape.circle,
   });
 
   void _buttonDown(PointerEvent event) {
-    client.updateButton(bitmask, true);
+    VControllerClient().updateButton(bitmask, true);
   }
 
   void _buttonUp(PointerEvent event) {
-    client.updateButton(bitmask, false);
+    VControllerClient().updateButton(bitmask, false);
   }
 
   @override
@@ -33,20 +40,26 @@ class ControllerButton extends StatelessWidget {
       onPointerUp: _buttonUp,
       onPointerCancel: _buttonUp,
       child: Container(
-        width: buttonSize,
-        height: buttonSize,
-        decoration: BoxDecoration(
-          shape: .circle,
-          color: Colors.transparent,
-          border: Border.all(color: Colors.white),
-        ),
+        width: buttonType == .circle ? buttonCircleSize : buttonRoundedWidth,
+        height: buttonType == .circle ? buttonCircleSize : buttonRoundedHeight,
+        decoration: buttonType == .circle
+            ? BoxDecoration(
+                shape: .circle,
+                color: Colors.transparent,
+                border: Border.all(color: Colors.white),
+              )
+            : BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.all(.circular(30)),
+              ),
         child: Center(
           child: textContent != null
               ? Text(
                   textContent!,
                   style: TextStyle(color: Colors.white, fontSize: textSize),
                 )
-              : widgetContent,
+              : Icon(iconContent, size: size, color: Colors.white),
         ),
       ),
     );

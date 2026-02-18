@@ -4,8 +4,7 @@ import 'package:vcontroller/src/services/controller_client.dart';
 import 'package:vcontroller/src/widgets/widgets.dart';
 
 class RightPanel extends StatelessWidget {
-  final VControllerClient client;
-  const RightPanel({super.key, required this.client});
+  const RightPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,50 +22,22 @@ class RightPanel extends StatelessWidget {
                   direction: Axis.horizontal,
                   mainAxisAlignment: .spaceBetween,
                   children: [
-                    ControllerButton(
-                      bitmask: 1024,
-                      textContent: "RB",
-                      client: client,
-                    ),
-                    ControllerButton(
-                      bitmask: 2048,
-                      textContent: "RT",
-                      client: client,
-                    ),
+                    ControllerButton(bitmask: 1024, textContent: "RB"),
+                    ControllerButton(bitmask: 2048, textContent: "RT"),
                   ],
                 ),
               ),
             ),
             ButtonDiamond(
               rowDirectional: .end,
-              up: ControllerButton(
-                bitmask: 128,
-                textContent: "Y",
-                client: client,
-              ),
-              right: ControllerButton(
-                bitmask: 32,
-                textContent: "B",
-                client: client,
-              ),
-              down: ControllerButton(
-                bitmask: 16,
-                textContent: "A",
-                client: client,
-              ),
-              left: ControllerButton(
-                bitmask: 64,
-                textContent: "X",
-                client: client,
-              ),
+              up: ControllerButton(bitmask: 128, textContent: "Y"),
+              right: ControllerButton(bitmask: 32, textContent: "B"),
+              down: ControllerButton(bitmask: 16, textContent: "A"),
+              left: ControllerButton(bitmask: 64, textContent: "X"),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: ControllerButton(
-                bitmask: 32768,
-                textContent: "R3",
-                client: client,
-              ),
+              child: ControllerButton(bitmask: 32768, textContent: "R3"),
             ),
           ],
         ),
@@ -76,7 +47,7 @@ class RightPanel extends StatelessWidget {
           top: 200,
           child: VirtualJoystick(
             onJoystickChanged: (double x, double y) {
-              client.updateRightJoystick(x, y);
+              VControllerClient().updateRightJoystick(x, y);
             },
           ),
         ),

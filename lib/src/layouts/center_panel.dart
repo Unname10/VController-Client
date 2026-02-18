@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vcontroller/src/services/controller_client.dart';
-import 'package:vcontroller/src/widgets/fn_button.dart';
+import 'package:vcontroller/src/widgets/button.dart';
 
 class CenterPanel extends StatelessWidget {
-  final VControllerClient client;
-  const CenterPanel({super.key, required this.client});
+  const CenterPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +10,16 @@ class CenterPanel extends StatelessWidget {
       mainAxisAlignment: .center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 70),
-          child: ControllerFnButton(
-            client: client,
+          padding: const EdgeInsets.only(right: 100),
+          child: ControllerButton(
             bitmask: 4096,
+            buttonType: .rounded,
             iconContent: Icons.arrow_left_rounded,
           ),
         ),
-        ControllerFnButton(
-          client: client,
+        ControllerButton(
           bitmask: 8192,
+          buttonType: .rounded,
           iconContent: Icons.arrow_right_rounded,
         ),
       ],
