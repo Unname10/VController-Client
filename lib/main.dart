@@ -10,7 +10,7 @@ import 'package:vcontroller/src/widgets/settings_dialog.dart';
 // Thông số tùy chỉnh
 const double minHeight = 350;
 const double minWidth = 800;
-const double paddingVertical = 10;
+const double paddingVertical = 12;
 const double paddingHorizontal = 20;
 
 void main() async {
@@ -52,12 +52,10 @@ class _ControllerState extends State<Controller> {
     await loadSavedSettings();
 
     // Khởi tạo Socket và kết nối với Server
-    await VControllerClient().init(
+    await VControllerClient().connect(
       ip: _targetController.text.split(":")[0],
       port: int.parse(_targetController.text.split(":")[1]),
     );
-
-    VControllerClient().connect();
 
     // Khởi tạo đối tượng lắng nghe sự kiện ẩn/hiện app
     // Để đóng/kết nối lại với server (Tiết kiệm pin và giảm nghẽn băng thông)
@@ -68,7 +66,10 @@ class _ControllerState extends State<Controller> {
       },
       onResume: () {
         print("App vừa trở lại, mở lại socket...");
-        VControllerClient().connect();
+        VControllerClient().connect(
+          ip: _targetController.text.split(":")[0],
+          port: int.parse(_targetController.text.split(":")[1]),
+        );
       },
     );
   }
@@ -105,6 +106,7 @@ class _ControllerState extends State<Controller> {
       home: Builder(
         builder: (context) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.black,
             body: Padding(
               padding: .only(

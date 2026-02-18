@@ -46,7 +46,7 @@ class VControllerClient {
   // VControllerClient({required this.serverIp, required this.serverPort});
 
   /// Khởi tạo kết nối UDP và vòng lặp Game Loop
-  Future<void> init({required String ip, required int port}) async {
+  Future<void> connect({required String ip, required int port}) async {
     try {
       // Khởi tạo đối tượng cũng như kiểm tra tính hợp lệ của server ip
       _targetAddress = InternetAddress(ip);
@@ -58,20 +58,17 @@ class VControllerClient {
 
       // Mở socket UDP ở bất kỳ IP khả dụng nào trên máy, port tự động (Port 0)
       _socket = await .bind(InternetAddress.anyIPv4, 0);
+      // Bắt đầu vòng lặp gửi dữ liệu liên tục 30 FPS (~33ms/lần)
+      // Vòng lặp này cực kỳ quan trọng để giữ chuyển động mượt mà cho Joystick
+      _loopTimer = Timer.periodic(const Duration(milliseconds: 33), (_) {
+        _sendPacket();
+      });
+
+      print("[*] Đã thiết lập vòng lặp gửi gói tin!");
       print('[*] Đã mở UDP Socket tại port: ${_socket?.port}');
     } catch (e) {
       print('[!] Lỗi khởi tạo UDP: $e');
     }
-  }
-
-  void connect() {
-    // Bắt đầu vòng lặp gửi dữ liệu liên tục 30 FPS (~33ms/lần)
-    // Vòng lặp này cực kỳ quan trọng để giữ chuyển động mượt mà cho Joystick
-    _loopTimer = Timer.periodic(const Duration(milliseconds: 33), (_) {
-      _sendPacket();
-    });
-
-    print("[*] Đã thiết lập vòng lặp gửi gói tin!");
   }
 
   // Dừng gửi và đóng Socket (Nên gọi khi thoát App)

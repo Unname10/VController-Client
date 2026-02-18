@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vcontroller/src/services/controller_client.dart';
 
-const double buttonCircleSize = 60; // Cỡ nút tròn
+const double buttonCircleSize = 65; // Cỡ nút tròn
 const double buttonRoundedHeight = 40; // Cỡ nút bo cong
 const double buttonRoundedWidth = 70;
 const double textSize = 18;

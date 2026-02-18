@@ -17,7 +17,7 @@ class LeftPanel extends StatelessWidget {
             Padding(
               padding: .directional(bottom: 10),
               child: SizedBox(
-                width: 180, // TODO: Remove Hard Code
+                width: 190, // TODO: Remove Hard Code
                 child: Flex(
                   direction: Axis.horizontal,
                   mainAxisAlignment: .spaceBetween,
@@ -35,14 +35,14 @@ class LeftPanel extends StatelessWidget {
               left: ControllerButton(bitmask: 8, textContent: "4"),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(top: 15),
               child: ControllerButton(bitmask: 16384, textContent: "L3"),
             ),
           ],
         ),
         Positioned(
           // TODO: Sửa Hard Code
-          left: 140,
+          left: 170,
           top: 200,
           child: VirtualJoystick(
             onJoystickChanged: (double x, double y) {

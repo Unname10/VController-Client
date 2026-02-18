@@ -17,7 +17,7 @@ class RightPanel extends StatelessWidget {
             Padding(
               padding: .directional(bottom: 10),
               child: SizedBox(
-                width: 180, // TODO: Remove Hard Code
+                width: 190, // TODO: Remove Hard Code
                 child: Flex(
                   direction: Axis.horizontal,
                   mainAxisAlignment: .spaceBetween,
@@ -36,14 +36,14 @@ class RightPanel extends StatelessWidget {
               left: ControllerButton(bitmask: 64, textContent: "X"),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(top: 15),
               child: ControllerButton(bitmask: 32768, textContent: "R3"),
             ),
           ],
         ),
         Positioned(
           // TODO: Sửa Hard Code
-          right: 140,
+          right: 170,
           top: 200,
           child: VirtualJoystick(
             onJoystickChanged: (double x, double y) {
