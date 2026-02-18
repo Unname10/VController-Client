@@ -62,12 +62,12 @@ void showSettingsDialog(
                     onPressed: () {
                       List<String> newTarget = targetController.text.split(":");
                       String newIp = newTarget[0];
-                      int newPort = int.parse(newTarget[1]);
+                      int? newPort = int.tryParse(newTarget[1]);
 
                       try {
                         VControllerClient().updateServerAddress(
                           ip: newIp,
-                          port: newPort,
+                          port: newPort!,
                         );
                         _saveSetting(targetController.text);
                         if (context.mounted) {

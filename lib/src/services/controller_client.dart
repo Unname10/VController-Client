@@ -83,7 +83,7 @@ class VControllerClient {
       // Gán lại địa chỉ đối tượng cũng như kiểm tra tính hợp lệ của server ip
       _targetAddress = InternetAddress(ip);
       // Gán lại cổng và kiểm tra tính hợp lệ của server port
-      if (port > 0 && port < 65535) {
+      if (port > 0 && port <= 65535) {
         serverPort = port;
       } else {
         throw Exception("Invalid server's port number!");

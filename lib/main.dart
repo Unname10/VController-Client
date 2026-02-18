@@ -64,11 +64,14 @@ class _ControllerState extends State<Controller> {
         print("App vừa bị ẩn, đang đóng socket...");
         VControllerClient().disconnect();
       },
-      onResume: () {
+      onResume: () async {
         print("App vừa trở lại, mở lại socket...");
+        final prefs = await SharedPreferences.getInstance();
+        String savedTarget =
+            prefs.getString('target_server') ?? '192.168.1.2:5005';
         VControllerClient().connect(
-          ip: _targetController.text.split(":")[0],
-          port: int.parse(_targetController.text.split(":")[1]),
+          ip: savedTarget.split(":")[0],
+          port: int.parse(savedTarget.split(":")[1]),
         );
       },
     );
